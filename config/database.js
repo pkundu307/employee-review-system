@@ -1,22 +1,23 @@
 const mongoose = require("mongoose");
+const dotenv = require('dotenv');
+
+const path = require('path');
+dotenv.config({ path: path.join(__dirname, 'config', 'config.env') });
+
 
 // here we connect the odm(object document maper) mongoose to the dbms mongodb.
-// mongoose.connect("mongodb+srv://employee-system-user:employee-system-password@employee-system-0.o4qxi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", 
-mongoose.connect("mongodb://127.0.0.1:27017/prasanna",{
+
+mongoose.connect('mongodb+srv://pkundu307:pkundu307@cluster0.t0qiuuq.mongodb.net/?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-
-
-
-const db = mongoose.connection; // db store the connection
-
-// cheacking the connection
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function () {
-  console.log("DATABASE connection is Established");
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', function () {
+  console.log('Connected to MongoDB');
 });
+
 
 // exporting the connection.
 module.exports = db;
