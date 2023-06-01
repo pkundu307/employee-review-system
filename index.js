@@ -1,14 +1,15 @@
-
 const express = require('express');
 const cookieParser = require('cookie-parser'); // parse cookie header and populate req.cookies
 const bodyParser = require('body-parser'); // parses incoming request bodies (req.body)
-const dotEnv = require('dotenv');
-dotEnv.config();
+const dotenv = require('dotenv');
+
 const app = express();
 const db = require('./config/database');
-const { PORT, MONGODB_URL, SESSION_SECRET_KEY } = process.env;
+const {  MONGODB_URL, SESSION_SECRET_KEY } = process.env;
 const expressLayouts = require('express-ejs-layouts');
-
+const path = require('path');
+dotenv.config({ path: path.join(__dirname, 'config', 'config.env') });
+const PORT=process.env.PORT || 5000;
 // used for session cookie
 const session = require('express-session');
 const passport = require('passport');
@@ -17,7 +18,7 @@ const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
-
+// const PORT=process.env.PORT|| 8000
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cookieParser());
@@ -61,9 +62,9 @@ app.use(customMware.setFlash);
 // use express router
 app.use('/', require('./routes'));
 
-app.listen( 5000, (err) => {
+app.listen( PORT, (err) => {
   if (err) {
     console.log(`Error in running the server: ${err}`);
   }
-  console.log(`Server is running on port: ${5000}`);
+  console.log(`Server is running on port: ${PORT}`);
 });
